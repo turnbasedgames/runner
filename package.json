@@ -1,6 +1,6 @@
 {
-  "name": "@sarahannali/localrunner",
-  "version": "1.0.8",
+  "name": "@turnbasedgames/localrunner",
+  "version": "0.0.1",
   "main": "bin/index.js",
   "bin": {
     "local-runner": "bin/index.js"

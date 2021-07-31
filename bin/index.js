@@ -9,7 +9,7 @@ var app = express();
 const port = process.env.PORT || 3000;
 
 fs = require('fs');
-var p = path.join(__dirname, "../", "index.html")
+var p = path.join(__dirname, "../dist/", "index.html")
 
 console.log(p)
 
