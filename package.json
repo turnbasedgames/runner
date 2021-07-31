@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/turnbasedgames/localrunner.git"
   },
-  "author": "",
+  "author": "kevo1ution",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/turnbasedgames/localrunner/issues"
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/turnbasedgames/localrunner#readme",
   "description": "",
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "express": "^4.17.1"
   }
 }
