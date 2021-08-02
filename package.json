@@ -1,6 +1,6 @@
 {
   "name": "@turnbasedgames/localrunner",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "bin/index.js",
   "bin": {
     "local-runner": "bin/index.js"
