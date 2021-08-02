@@ -1,26 +1,44 @@
 {
   "name": "@turnbasedgames/localrunner",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "bin/index.js",
   "bin": {
     "local-runner": "bin/index.js"
   },
-  "scripts": {
-    "local-runner": "node bin/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/turnbasedgames/localrunner.git"
-  },
-  "author": "kevo1ution",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/turnbasedgames/localrunner/issues"
-  },
-  "homepage": "https://github.com/turnbasedgames/localrunner#readme",
-  "description": "",
   "dependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
     "app-root-path": "^3.0.0",
-    "express": "^4.17.1"
+    "node-static": "^0.7.11",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "node bin/index.js",
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

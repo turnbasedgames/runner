@@ -1,26 +1,25 @@
 #! /usr/bin/env node
-
+const assert = require('assert').strict;
 const http = require('http');
-const path = require('path')
+const statik = require('node-static');
 const appRoot = require('app-root-path');
-var express = require('express');
 
-var app = express();
+const toolUIPort = process.env.TBG_TOOL_UI_PORT || 9091
+const userFrontendPort = process.env.TBG_USER_FRONTEND_PORT || 9092
+assert(toolUIPort !== userFrontendPort, "TBG_TOOL_UI_PORT and TBG_USER_FRONTEND_PORT should not be the same!");
 
-const port = process.env.PORT || 3000;
+const toolUIStaticServer = new statik.Server('./build');
+const userFrontendStaticServer = new statik.Server(appRoot.path + '/dist');
 
-fs = require('fs');
-var p = path.join(appRoot.path, "/dist/", "index.html")
+console.log("View TBG Tool UI on http://localhost:" + toolUIPort);
+http.createServer(function (request, response) {
+    request.addListener('end', function () {
+        toolUIStaticServer.serve(request, response);
+    }).resume();
+}).listen(toolUIPort);
 
-console.log(`serving on PORT ${port}: ${p}`)
-
-fs.readFile(p, function (err, html) {
-    if (err) {
-        throw err; 
-    }       
-    http.createServer(function(request, response) {  
-        response.writeHeader(200, {"Content-Type": "text/html"});  
-        response.write(html);  
-        response.end();  
-    }).listen(port);
-});
+http.createServer(function (request, response) {
+    request.addListener('end', function () {
+        userFrontendStaticServer.serve(request, response);
+    }).resume();
+}).listen(userFrontendPort);
