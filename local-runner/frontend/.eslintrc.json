@@ -27,6 +27,8 @@
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
   },
   "parserOptions": {
-    "project": ["tsconfig.json"]
+    "project": ["tsconfig.json"],
+    "tsconfigRootDir": "./",
+    "sourceType": "module"
   }
 }
