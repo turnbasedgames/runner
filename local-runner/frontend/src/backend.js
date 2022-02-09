@@ -114,7 +114,6 @@ function isEndGame(board, plrs){
  * @returns {BoardGameResult}
  */
 function onPlayerJoin(plr, {players, state}){
-  console.log("STATE: ", state)
   // VALIDATIONS
   // check if game has started
   if(state.state !== "NOT_STARTED"){
@@ -147,6 +146,10 @@ function onPlayerJoin(plr, {players, state}){
  */
 function onPlayerMove(plr, move, { state, players, joinable }){
   const {board} = state
+  console.log("PLR: ", plr)
+  console.log("PLAYER TO MOVE: ", getPlrToMove(board, players))
+  console.log("STATE: ", state)
+  console.log("PLAYERS: ", players);
 
   // VALIDATIONS
   // boardgame must be in the game
