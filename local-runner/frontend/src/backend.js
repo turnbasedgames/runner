@@ -148,8 +148,7 @@ function onPlayerMove(plr, move, { state, players, joinable }){
   const {board} = state
   console.log("PLR: ", plr)
   console.log("PLAYER TO MOVE: ", getPlrToMove(board, players))
-  console.log("STATE: ", state)
-  console.log("PLAYERS: ", players);
+  console.log("EQUAL: ", plr === getPlrToMove(board, players));
 
   // VALIDATIONS
   // boardgame must be in the game
@@ -159,7 +158,7 @@ function onPlayerMove(plr, move, { state, players, joinable }){
     throw new Error("game is not in progress, can't make move!")
   }
   if(getPlrToMove(board, players) !== plr){
-    throw new Error("Its not this player's turn: " + plr)
+    throw new Error("It's not this player's turn: " + plr)
   }
   if(board[x][y] !== null){
     throw new Error("Invalid move, someone already marked here: " + x + "," + y)

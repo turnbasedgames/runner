@@ -2,10 +2,13 @@
 import React, {
   useEffect, useRef, useState,
 } from 'react';
-import { ObjectID } from 'bson';
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 import { connectToChild } from 'penpal';
+import axios from 'axios';
+import { io } from 'socket.io-client';
 import { onRoomStart, onPlayerJoin, onPlayerMove } from '../../backend';
+
+const socket = io('http://localhost:8080', { transports: ['websocket'] });
 
 interface BoardGame {
   state: Record<string, any>,
@@ -14,7 +17,7 @@ interface BoardGame {
   players: string[]
 }
 
-let boardGame: BoardGame = {
+let initialBoardGameState: BoardGame = {
   state: {},
   joinable: true,
   finished: false,
@@ -24,50 +27,71 @@ let boardGame: BoardGame = {
 let currentPlayerID = '';
 
 function Runner() {
-  const [boardGame2, setBoardGame2] = useState<BoardGame>({
-    state: {},
-    joinable: true,
-    finished: false,
-    players: [],
-  });
   const [createdPlayers, setCreatedPlayers] = useState<string[]>([]);
   const [currentPlayer, setCurrentPlayer] = useState<string>('');
   const [childClient, setChildClient] = useState<any | null>(null);
 
-  const startRoom = () => {
-    boardGame = { ...boardGame, ...onRoomStart() };
+  const getCurrentState = async () => {
+    const res = await axios.get('/api/');
+    return res.data as BoardGame;
   };
 
-  const joinPlayer = () => {
-    const newBoardGameState = ({
-      ...boardGame,
-      players: [...boardGame.players, currentPlayer],
-    });
-    if (currentPlayer) {
-      boardGame = {
-        ...newBoardGameState,
-        ...onPlayerJoin(currentPlayer, newBoardGameState),
-      };
+  const setCurrentState = async (state: BoardGame) => {
+    await axios.post('/api/', state);
+    if (childClient) childClient.stateChanged(state);
+  };
+
+  useEffect(() => {
+    const setLatestStateWithContender = (contender: BoardGame) => {
+      console.log('CONTENDER: ', contender);
+      if (childClient) childClient.stateChanged(contender);
+      else initialBoardGameState = contender;
+      setCreatedPlayers(contender.players);
+    };
+
+    const startRoom = async () => {
+      console.log('INITIAL BOARD GAME STATE: ', initialBoardGameState);
+      await setCurrentState({ ...initialBoardGameState, ...onRoomStart() });
+    };
+
+    async function setupRoomSocket() {
+      socket.on('room:latestState', setLatestStateWithContender);
     }
+
+    setupRoomSocket();
+    startRoom();
+    // return () => {
+    //   socket.emit('unwatchRoom', { roomId }, (res: null | UnwatchRoomRes) => {
+    //     if (res) {
+    //       console.error('error trying to unwatch room', res.error);
+    //     }
+    //   });
+    //   socket.off('room:latestState', setLatestStateWithContender);
+    // };
+  }, [childClient]);
+
+  const resetGame = async () => {
+    await axios.post('/api/reset');
   };
 
-  const handleSelect = (event: SelectChangeEvent) => {
-    currentPlayerID = (event.target as HTMLInputElement).value;
-    setCurrentPlayer(currentPlayerID);
+  const changePlayer = (ID: string) => {
+    setCurrentPlayer(ID);
+    currentPlayerID = ID;
   };
 
-  const createPlayer = () => {
-    const newPlayer = new ObjectID().toString();
-    setCreatedPlayers([...createdPlayers, newPlayer]);
+  const joinNewPlayer = async () => {
+    const newPlayer = (createdPlayers.length + 1).toString();
+    await setCreatedPlayers([...createdPlayers, newPlayer]);
+    await changePlayer(newPlayer);
+
+    const state = await getCurrentState();
+    state.players = [...state.players, newPlayer];
+    const newState = { ...state, ...onPlayerJoin(newPlayer, state) };
+
+    await setCurrentState(newState);
   };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
-
-  useEffect(() => {
-    if (childClient && Object.keys(boardGame2.state).length !== 0) {
-      childClient.stateChanged(boardGame2);
-    }
-  }, [childClient, boardGame2]);
 
   useEffect(() => {
     if (iframeRef.current) {
@@ -78,9 +102,10 @@ function Runner() {
         methods: {
           async makeMove(move: any) {
             try {
-              const newState = onPlayerMove(currentPlayerID, move, boardGame);
-              boardGame = { ...boardGame, ...newState };
-              setBoardGame2(boardGame);
+              const currentState = await getCurrentState();
+              const newState = onPlayerMove(currentPlayerID, move, currentState);
+              await setCurrentState({ ...currentState, ...newState });
+
               return { success: true };
             } catch (err) {
               console.log(err);
@@ -104,10 +129,9 @@ function Runner() {
         id="gameFrame"
         style={{ width: '100%', border: 'none' }}
       />
-      <button type="button" onClick={startRoom}>Start Room</button>
       {/* <button type="button" onClick={makeMove}>Make Move</button> */}
-      <button type="button" onClick={joinPlayer}>Join Player</button>
-      <Select value={currentPlayer} label="Current Player" onChange={handleSelect}>
+      <button type="button" onClick={joinNewPlayer}>Join New Player</button>
+      <Select value={currentPlayer} label="Current Player" onChange={(e) => changePlayer(e.target.value)}>
         {createdPlayers.map((player) => (
           <MenuItem
             value={player}
@@ -117,7 +141,7 @@ function Runner() {
           </MenuItem>
         ))}
       </Select>
-      <button type="button" onClick={createPlayer}>+</button>
+      <button type="button" onClick={resetGame}>RESET</button>
     </div>
   );
 }
