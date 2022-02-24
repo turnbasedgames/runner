@@ -14,15 +14,19 @@ interface BoardGame {
   state: Record<string, any>,
   joinable: boolean,
   finished: boolean,
-  players: string[]
+  players: string[],
+  version: number
 }
 
-let initialBoardGameState: BoardGame = {
+const initialBoardGameState: BoardGame = {
   state: {},
   joinable: true,
   finished: false,
   players: [],
+  version: 0,
 };
+
+let boardGame = initialBoardGameState;
 
 let currentPlayerID = '';
 
@@ -42,16 +46,17 @@ function Runner() {
   };
 
   useEffect(() => {
-    const setLatestStateWithContender = (contender: BoardGame) => {
-      console.log('CONTENDER: ', contender);
-      if (childClient) childClient.stateChanged(contender);
-      else initialBoardGameState = contender;
-      setCreatedPlayers(contender.players);
-    };
+    const setLatestStateWithContender = async (contender: BoardGame) => {
+      console.log('IN LATEST, CONTENDER: ', contender);
+      console.log('CHILD CLIENT: ', childClient);
+      if (childClient) {
+        console.log('UPDATING CHILD STATE');
+        childClient.stateChanged(contender);
+      } else boardGame = contender;
 
-    const startRoom = async () => {
-      console.log('INITIAL BOARD GAME STATE: ', initialBoardGameState);
-      await setCurrentState({ ...initialBoardGameState, ...onRoomStart() });
+      if (contender.version === 0) {
+        await setCurrentState({ ...contender, ...onRoomStart() });
+      } else { setCreatedPlayers(contender.players); }
     };
 
     async function setupRoomSocket() {
@@ -59,7 +64,6 @@ function Runner() {
     }
 
     setupRoomSocket();
-    startRoom();
     // return () => {
     //   socket.emit('unwatchRoom', { roomId }, (res: null | UnwatchRoomRes) => {
     //     if (res) {
@@ -71,7 +75,7 @@ function Runner() {
   }, [childClient]);
 
   const resetGame = async () => {
-    await axios.post('/api/reset');
+    await setCurrentState({ ...initialBoardGameState, ...onRoomStart() });
   };
 
   const changePlayer = (ID: string) => {
@@ -95,6 +99,7 @@ function Runner() {
 
   useEffect(() => {
     if (iframeRef.current) {
+      console.log('IN IFRAME CURRENT');
       // eslint-disable-next-line no-param-reassign
       iframeRef.current.src = 'http://localhost:3000';
       const connection = connectToChild({
@@ -102,6 +107,7 @@ function Runner() {
         methods: {
           async makeMove(move: any) {
             try {
+              console.log('IN MAKEMOVE');
               const currentState = await getCurrentState();
               const newState = onPlayerMove(currentPlayerID, move, currentState);
               await setCurrentState({ ...currentState, ...newState });

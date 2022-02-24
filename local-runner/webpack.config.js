@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   // this is specific to jsx... separate into a paths file?
   // js, jsx, ts, tsx...
-  entry: path.resolve(__dirname, '../frontend/src/index.jsx'),
+  entry: path.resolve(__dirname, '..', 'frontend', 'dist', 'index.html'),
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Output Management'
