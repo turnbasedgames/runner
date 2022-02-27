@@ -47,10 +47,7 @@ function Runner() {
 
   useEffect(() => {
     const setLatestStateWithContender = async (contender: BoardGame) => {
-      console.log('IN LATEST, CONTENDER: ', contender);
-      console.log('CHILD CLIENT: ', childClient);
       if (childClient) {
-        console.log('UPDATING CHILD STATE');
         childClient.stateChanged(contender);
       } else boardGame = contender;
 
@@ -64,14 +61,10 @@ function Runner() {
     }
 
     setupRoomSocket();
-    // return () => {
-    //   socket.emit('unwatchRoom', { roomId }, (res: null | UnwatchRoomRes) => {
-    //     if (res) {
-    //       console.error('error trying to unwatch room', res.error);
-    //     }
-    //   });
-    //   socket.off('room:latestState', setLatestStateWithContender);
-    // };
+
+    if (childClient) {
+      childClient.stateChanged(boardGame);
+    }
   }, [childClient]);
 
   const resetGame = async () => {
@@ -99,7 +92,6 @@ function Runner() {
 
   useEffect(() => {
     if (iframeRef.current) {
-      console.log('IN IFRAME CURRENT');
       // eslint-disable-next-line no-param-reassign
       iframeRef.current.src = 'http://localhost:3000';
       const connection = connectToChild({
@@ -107,7 +99,6 @@ function Runner() {
         methods: {
           async makeMove(move: any) {
             try {
-              console.log('IN MAKEMOVE');
               const currentState = await getCurrentState();
               const newState = onPlayerMove(currentPlayerID, move, currentState);
               await setCurrentState({ ...currentState, ...newState });
