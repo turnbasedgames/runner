@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run local-runner",
+    "start": "npm run serve & npm run start-server & npm run start-client",
     "serve": "serve ../frontend/dist",
-    "local-runner": "node index.js",
+    "start-client": "cd frontend && npm run start",
+    "start-server": "cd server && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

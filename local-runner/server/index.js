@@ -38,5 +38,4 @@ io.on("connection", socket => {
   socket.emit("room:latestState", boardGame);
 });
 
-httpServer.listen(port)
-console.log("LISTENING AT: ", port);
+httpServer.listen(port);
