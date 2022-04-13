@@ -1,11 +1,12 @@
 {
   "name": "@turnbasedgames/localrunner",
-  "version": "1.0.8",
+  "version": "1.0.8dev0",
   "bin": {
     "localrunner": "bin/localrunner.js"
   },
   "scripts": {
     "start": "localrunner",
+    "build": "concurrently \"cd frontend && npm run build\"",
     "dev": "concurrently \"localrunner -de -t http://localhost:3000\" \"cd frontend && npm start\""
   },
   "repository": {
