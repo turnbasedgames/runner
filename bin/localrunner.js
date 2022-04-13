@@ -27,5 +27,5 @@ if (options.frontendEndUrl) {
   }
 }
 
-setupFrontends();
+setupFrontends({ frontendEndUrl: options.frontendEndUrl, tbgFrontendUrl: options.tbgFrontendUrl });
 setupServer(options.dummyBackend);
