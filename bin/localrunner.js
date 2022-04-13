@@ -4,6 +4,8 @@ const { stringIsAValidUrl } = require('../src/util');
 const { setupFrontends } = require('../src/setupFrontends');
 // TODO: cors on everything
 // TODO: setup dev environment option for a local dummy user frontend and backend
+// TODO: handle when ports are taken in elegant way
+// (react-scripts start prompts user with Y/n question to auto choose available port)
 const { setupServer } = require('../src/setupServer');
 
 program
