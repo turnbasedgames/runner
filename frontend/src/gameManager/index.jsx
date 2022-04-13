@@ -68,7 +68,6 @@ function GameManager() {
               </Stack>
             </Paper>
           </Stack>
-
         </Stack>
       </Stack>
     </Stack>
