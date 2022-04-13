@@ -2,11 +2,11 @@
   "name": "@turnbasedgames/localrunner",
   "version": "1.0.8",
   "bin": {
-    "local-runner": "bin/local-runner.js"
+    "localrunner": "bin/localrunner.js"
   },
   "scripts": {
-    "start": "local-runner",
-    "dev": "local-runner -t http://localhost:3000"
+    "start": "localrunner",
+    "dev": "localrunner -t http://localhost:3000 -d"
   },
   "repository": {
     "type": "git",
