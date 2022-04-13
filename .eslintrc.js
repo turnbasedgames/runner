@@ -1,23 +1,18 @@
 module.exports = {
+  ignorePatterns: [
+    'frontend', // frontend folder has it's own eslint config
+  ],
   env: {
-    browser: true,
+    commonjs: true,
     es2021: true,
     node: true,
   },
   extends: [
-    'plugin:react/recommended',
-    'airbnb',
+    'airbnb-base',
   ],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    ecmaVersion: 12,
   },
-  plugins: [
-    'react',
-  ],
   rules: {
   },
 };

@@ -1,3 +1,4 @@
+// TODO: setup socket server
 const express = require('express');
 const {
   userBackend,
@@ -7,14 +8,14 @@ const {
 // TODO: hot reload based on backendModule changes
 // TODO: game state management server
 module.exports = {
-  setupServer(isDummyBackend) {
+  setupServer(isEmptyBackend) {
     let backendModule = {
       onRoomStart: () => ({}),
       onPlayerJoin: () => null,
       onPlayerMove: () => null,
       onPlayerQuit: () => null,
     };
-    if (!isDummyBackend) {
+    if (!isEmptyBackend) {
     // eslint-disable-next-line global-require, import/no-dynamic-require
       backendModule = require(userBackend);
     }
