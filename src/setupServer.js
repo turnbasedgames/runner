@@ -2,6 +2,7 @@
 const express = require('express');
 const { StatusCodes } = require('http-status-codes');
 const cors = require('cors');
+const defaultBackendModule = require('../test_app/index');
 const {
   userBackend,
 } = require('../config/paths');
@@ -10,12 +11,7 @@ const { newBoardGame, applyBoardGameResult, filterBoardGame } = require('./board
 // TODO: MAIN-89 hot reload based on backendModule changes
 module.exports = {
   setupServer(isEmptyBackend) {
-    let backendModule = {
-      onRoomStart: () => ({}),
-      onPlayerJoin: () => ({}),
-      onPlayerMove: () => ({}),
-      onPlayerQuit: () => ({}),
-    };
+    let backendModule = defaultBackendModule;
     if (!isEmptyBackend) {
     // eslint-disable-next-line global-require, import/no-dynamic-require
       backendModule = require(userBackend);
