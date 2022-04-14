@@ -5,7 +5,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import ReactJson from 'react-json-view';
 
-// TODO: diff viewer may require us to switch to monoco editor https://microsoft.github.io/monaco-editor/
+// TODO: MAIN-88 diff viewer may require us to switch to monoco editor https://microsoft.github.io/monaco-editor/
 function Timeline() {
   const theme = useTheme();
   const actions = [{ name: 'player billy joined' }];

@@ -9,9 +9,9 @@ import ReactJson from 'react-json-view';
 function GameManager() {
   const theme = useTheme();
   const curGameState = {
-    msg: 'TODO: this is the current game state',
+    msg: 'TODO: MAIN-66 this is the current game state',
   };
-  const curPlayers = ['UserId1']; // TODO: need to get this dynamically
+  const curPlayers = ['UserId1']; // TODO: MAIN-66 need to get this dynamically
   let playerTitle = 'No Players!';
   if (curPlayers.length === 1) {
     playerTitle = '1 Player';

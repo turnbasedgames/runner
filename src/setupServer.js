@@ -1,12 +1,10 @@
-// TODO: setup socket server
+// TODO: MAIN-67 setup socket server
 const express = require('express');
 const {
   userBackend,
 } = require('../config/paths');
 
-// TODO: use backendModule to do calculations
-// TODO: hot reload based on backendModule changes
-// TODO: game state management server
+// TODO: MAIN-89 hot reload based on backendModule changes
 module.exports = {
   setupServer(isEmptyBackend) {
     let backendModule = {
