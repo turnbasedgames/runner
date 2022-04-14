@@ -7,7 +7,7 @@
   "scripts": {
     "start": "localrunner",
     "build": "concurrently \"cd frontend && npm run build\"",
-    "dev": "concurrently \"localrunner -de -t http://localhost:3100\" \"cd frontend && PORT=3100 npm start\""
+    "dev": "concurrently \"localrunner -de -t http://localhost:3100 -f http://localhost:3101\" \"cd frontend && PORT=3100 npm start\" \"cd test_app/frontend && PORT=3101 npm start\""
   },
   "repository": {
     "type": "git",
