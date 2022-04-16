@@ -40,6 +40,7 @@ function GameManager() {
               onClick={async () => {
                 await addPlayer();
                 await reloadGameState();
+                // TODO: open new tab as the player
               }}
             >
               Add Player
@@ -82,6 +83,7 @@ function GameManager() {
                   </Typography>
                 </Stack>
                 {players.map((player) => (
+                  // TODO: open player in new tab if click on the player
                   <Stack key={player} direction="row" justifyContent="space-between" alignItems="center">
                     <Typography color="text.primary">{player}</Typography>
                     <IconButton
