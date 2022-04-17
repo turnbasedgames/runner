@@ -9,6 +9,13 @@ export const getState = async () => {
   return data;
 };
 
+export const makeMove = (playerId, move) => axios.post(`${BASE_URL}/player/${playerId}/move`, move);
+
 export const resetState = async () => axios.delete(`${BASE_URL}/state`);
 
 export const removePlayer = (playerId) => axios.delete(`${BASE_URL}/player/${playerId}`);
+
+export const isPlayerInGame = async (playerId) => {
+  const { players } = await getState();
+  return players.includes(playerId);
+};

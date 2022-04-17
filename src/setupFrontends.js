@@ -6,7 +6,7 @@ const {
 } = require('../config/paths');
 
 module.exports = {
-  setupFrontends({ frontendEndUrl, tbgFrontendUrl }) {
+  setupFrontends({ frontendUrl, tbgFrontendUrl }) {
     const setupFrontendService = (currentUrl, path, port) => {
       if (currentUrl) {
         return;
@@ -20,7 +20,7 @@ module.exports = {
       });
     };
 
-    setupFrontendService(frontendEndUrl, userFrontendPath, 3001);
-    setupFrontendService(tbgFrontendUrl, buildPath, 3002);
+    setupFrontendService(tbgFrontendUrl, buildPath, 3100);
+    setupFrontendService(frontendUrl, userFrontendPath, 3101);
   },
 };

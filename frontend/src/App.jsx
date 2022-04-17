@@ -30,7 +30,7 @@ function App() {
               </Stack>
           )}
           />
-          <Route path="/player" element={<Player />} />
+          <Route path="/player/:playerId" element={<Player />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

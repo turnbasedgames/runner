@@ -7,7 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ReactJson from 'react-json-view';
 import {
   addPlayer, getState, resetState, removePlayer,
-} from './game';
+} from '../data';
 
 function GameManager() {
   const theme = useTheme();
@@ -26,6 +26,7 @@ function GameManager() {
   } else if (players.length > 1) {
     playerTitle = `${players.length} Players`;
   }
+  // TODO: fix overflow of json display
   return (
     <Stack height="50%">
       <AppBar position="relative">

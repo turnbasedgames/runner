@@ -12,20 +12,18 @@ module.exports = {
       last: boardGame,
     },
   }),
-  onPlayerMove: (plr, move, boardGame) => {
-    CREATOR_EDITABLE_FIELDS.reduce((prev, field) => {
-      if (move[field]) {
-        return { ...prev, [field]: move[field] };
-      }
-      return prev;
-    }, {
-      state: {
-        message: `${plr} made move!`,
-        move,
-        last: boardGame,
-      },
-    });
-  },
+  onPlayerMove: (plr, move, boardGame) => CREATOR_EDITABLE_FIELDS.reduce((prev, field) => {
+    if (move[field]) {
+      return { ...prev, [field]: move[field] };
+    }
+    return prev;
+  }, {
+    state: {
+      message: `${plr} made move!`,
+      move,
+      last: boardGame,
+    },
+  }),
   onPlayerQuit: (plr, boardGame) => ({
     state: {
       message: `${plr} left!`,
