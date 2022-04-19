@@ -33,7 +33,7 @@ module.exports = {
         boardGame,
         backendModule.onPlayerJoin(playerId, filterBoardGame(boardGame)),
       );
-      res.sendStatus(StatusCodes.OK);
+      res.status(StatusCodes.OK).json({ id: playerId });
     });
 
     app.delete('/player/:id', (req, res) => {

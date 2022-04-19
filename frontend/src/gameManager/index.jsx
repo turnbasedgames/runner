@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  AppBar, Toolbar, Typography, Stack, Button, IconButton, Paper,
+  AppBar, Toolbar, Typography, Stack, Button, IconButton, Paper, MenuItem, MenuList, LinearProgress,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReactJson from 'react-json-view';
@@ -9,11 +9,18 @@ import {
 } from '../data';
 
 function GameManager() {
+  const openPlayerTab = (id) => {
+    window.open(`/player/${id}`, '_blank').focus();
+  };
+
+  const [loading, setLoading] = useState(true);
   const [gameState, setGameState] = useState(null);
   const { players = [] } = gameState || {};
   async function reloadGameState() {
+    setLoading(true);
     const state = await getState();
     setGameState(state);
+    setLoading(false);
   }
   useEffect(() => {
     reloadGameState();
@@ -36,9 +43,9 @@ function GameManager() {
               size="small"
               variant="outlined"
               onClick={async () => {
-                await addPlayer();
+                const { id } = await addPlayer();
                 await reloadGameState();
-                // TODO: open new tab as the player
+                openPlayerTab(id);
               }}
             >
               Add Player
@@ -56,6 +63,7 @@ function GameManager() {
             </Button>
           </Stack>
         </Toolbar>
+        {loading && <LinearProgress position="relative" />}
       </AppBar>
       <Stack direction="row" spacing={1} sx={{ minHeight: 0, flexGrow: 1 }}>
         <Stack
@@ -87,22 +95,35 @@ function GameManager() {
                   {playerTitle}
                 </Typography>
               </Stack>
-              {players.map((player) => (
-                // TODO: open player in new tab if click on the player
-                <Stack key={player} direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography color="text.primary">{player}</Typography>
-                  <IconButton
-                    size="small"
-                    color="error"
-                    onClick={async () => {
-                      await removePlayer(player);
-                      await reloadGameState();
-                    }}
+              <MenuList
+                id="basic-menu"
+                open
+                variant="selectedMenu"
+              >
+                {players.map((player) => (
+                  <MenuItem onClick={() => {
+                    openPlayerTab(player);
+                  }}
                   >
-                    <ClearIcon />
-                  </IconButton>
-                </Stack>
-              ))}
+                    <Typography
+                      color="text.primary"
+                    >
+                      {player}
+                    </Typography>
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        await removePlayer(player);
+                        await reloadGameState();
+                      }}
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </MenuItem>
+                ))}
+              </MenuList>
             </Stack>
           </Paper>
         </Stack>

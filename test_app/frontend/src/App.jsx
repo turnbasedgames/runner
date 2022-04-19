@@ -23,7 +23,7 @@ function App() {
         <AppBar position="relative">
           <Toolbar variant="dense" sx={{ justifyContent: 'space-between' }}>
             <Typography color="text.primary">
-              Current Game State
+              Test Game Frontend
             </Typography>
             <Stack spacing={1} direction="row">
               <Button

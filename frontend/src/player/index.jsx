@@ -70,7 +70,7 @@ function Player() {
       <iframe
         ref={iframeRef}
         title="gameFrame"
-        sandbox="allow-scripts allow-forms allow-same-origin" // TODO: concept of least privelege, why do we need these?
+        sandbox="allow-scripts allow-forms allow-same-origin"
         id="gameFrame"
         style={{ height: '100vh', width: '100%', border: 'none' }}
       />
