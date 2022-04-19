@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   AppBar, Toolbar, Typography, Stack, Button, IconButton, Paper,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReactJson from 'react-json-view';
 import {
@@ -10,7 +9,6 @@ import {
 } from '../data';
 
 function GameManager() {
-  const theme = useTheme();
   const [gameState, setGameState] = useState(null);
   const { players = [] } = gameState || {};
   async function reloadGameState() {
@@ -60,48 +58,54 @@ function GameManager() {
           </Stack>
         </Toolbar>
       </AppBar>
-      <Stack direction="row" spacing={1} sx={{ flexGrow: 1 }}>
-        <Stack spacing={1} sx={{ flexGrow: 1 }}>
-          <Stack
-            sx={{ flexGrow: 1 }}
-            direction="row"
-            spacing={1}
-            margin={1}
+      <Stack direction="row" spacing={1} sx={{ minHeight: 0, flexGrow: 1 }}>
+        <Stack
+          sx={{ padding: 1, flexGrow: 1, minWidth: 0 }}
+          direction="row"
+          spacing={1}
+        >
+          <Paper sx={{
+            padding: 1,
+            flexGrow: 1,
+            overflow: 'auto',
+          }}
           >
-            <Paper sx={{ flexGrow: 1 }}>
-              <ReactJson
-                style={{ margin: theme.spacing(1) }}
-                name={false}
-                theme="twilight"
-                src={gameState}
-              />
-            </Paper>
-            <Paper>
-              <Stack margin={1}>
-                <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography color="text.primary" sx={{ fontWeight: 'bold' }}>
-                    {playerTitle}
-                  </Typography>
-                </Stack>
-                {players.map((player) => (
-                  // TODO: open player in new tab if click on the player
-                  <Stack key={player} direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography color="text.primary">{player}</Typography>
-                    <IconButton
-                      size="small"
-                      color="error"
-                      onClick={async () => {
-                        await removePlayer(player);
-                        await reloadGameState();
-                      }}
-                    >
-                      <ClearIcon />
-                    </IconButton>
-                  </Stack>
-                ))}
+            <ReactJson
+              name={false}
+              theme="twilight"
+              src={gameState}
+            />
+          </Paper>
+          <Paper sx={{
+            padding: 1,
+            minWidth: '120px',
+            overflow: 'auto',
+          }}
+          >
+            <Stack>
+              <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
+                <Typography color="text.primary" sx={{ fontWeight: 'bold' }}>
+                  {playerTitle}
+                </Typography>
               </Stack>
-            </Paper>
-          </Stack>
+              {players.map((player) => (
+                // TODO: open player in new tab if click on the player
+                <Stack key={player} direction="row" justifyContent="space-between" alignItems="center">
+                  <Typography color="text.primary">{player}</Typography>
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={async () => {
+                      await removePlayer(player);
+                      await reloadGameState();
+                    }}
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </Stack>
+              ))}
+            </Stack>
+          </Paper>
         </Stack>
       </Stack>
     </Stack>

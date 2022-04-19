@@ -23,7 +23,6 @@ function App() {
             element={(
               <Stack
                 height="100vh"
-                overflow="auto"
               >
                 <GameManager />
                 <Timeline />
