@@ -24,7 +24,6 @@ function GameManager() {
   } else if (players.length > 1) {
     playerTitle = `${players.length} Players`;
   }
-  // TODO: fix overflow of json display
   return (
     <Stack height="50%">
       <AppBar position="relative">
