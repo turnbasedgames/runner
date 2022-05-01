@@ -16,10 +16,9 @@ const setupFrontendService = (currentUrl, frontendPath, port) => {
   app.get('*', (_, res) => {
     res.sendFile(path.resolve(frontendPath, 'index.html'));
   });
-  const server = app.listen(port, () => {
-    const url = `http://localhost:${server.address().port}`;
-    console.log(`serving ${frontendPath} at ${url}`);
-  });
+  const server = app.listen(port);
+  const url = `http://localhost:${server.address().port}`;
+  console.log(`serving ${frontendPath} at ${url}`);
   return () => server.close();
 };
 

@@ -9,6 +9,7 @@ const { setupFrontends } = require('../src/setupFrontends');
 // (react-scripts start prompts user with Y/n question to auto choose available port)
 const { setupServer } = require('../src/setupServer');
 
+const apiPort = 3000;
 const portForRunner = 3100;
 const runnerUrl = `http://localhost:${portForRunner}`;
 
@@ -41,7 +42,7 @@ if (options.frontendUrl) {
   }
 }
 
-const cleanupServerFunc = setupServer(options.emptyBackend);
+const cleanupServerFunc = setupServer({ isEmptyBackend: options.emptyBackend, apiPort });
 const cleanupFrotnendsFunc = setupFrontends({
   frontendUrl: options.frontendUrl,
   tbgFrontendUrl: options.tbgFrontendUrl,
