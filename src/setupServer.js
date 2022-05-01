@@ -17,7 +17,6 @@ module.exports = {
     // eslint-disable-next-line global-require, import/no-dynamic-require
       backendModule = require(userBackend);
     }
-    console.log('loaded backend module', backendModule);
 
     // State that is being tracked for any operation (e.g. make move, add player)
     let boardGame = newBoardGame(backendModule);
@@ -84,9 +83,8 @@ module.exports = {
       res.sendStatus(StatusCodes.OK);
     });
 
-    const server = httpServer.listen(3000, () => {
-      const url = `http://localhost:${server.address().port}`;
-      console.log(`api server at ${url}`);
-    });
+    const server = httpServer.listen(3000);
+
+    return () => server.close();
   },
 };
