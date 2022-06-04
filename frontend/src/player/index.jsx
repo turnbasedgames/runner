@@ -52,6 +52,9 @@ function Player() {
       const connection = connectToChild({
         iframe,
         methods: {
+          async GetLocalPlayer() {
+            return player.id;
+          },
           async makeMove(move) {
             try {
               console.log('making move with player', player);
