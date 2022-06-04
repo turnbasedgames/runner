@@ -53,7 +53,7 @@ function Player() {
         iframe,
         methods: {
           async getLocalPlayer() {
-            return player.id;
+            return { id: player.id, username: player.username };
           },
           async makeMove(move) {
             try {
