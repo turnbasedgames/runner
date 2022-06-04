@@ -52,7 +52,7 @@ function Player() {
       const connection = connectToChild({
         iframe,
         methods: {
-          async GetLocalPlayer() {
+          async getLocalPlayer() {
             return player.id;
           },
           async makeMove(move) {
