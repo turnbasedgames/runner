@@ -4,7 +4,7 @@ const cors = require('cors');
 const {
   buildPath,
   userFrontendPath,
-} = require('../config/paths');
+} = require('../config/paths.cjs');
 
 const setupFrontendService = (currentUrl, frontendPath, port) => {
   if (currentUrl) {

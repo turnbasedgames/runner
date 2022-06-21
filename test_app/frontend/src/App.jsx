@@ -11,7 +11,13 @@ const DEFAULT_MOVE_TEXT = '// put move JSON here';
 
 function App() {
   const [moveObj, setMoveObj] = useState(null);
+
   useEffect(() => {
+    const player = async () => {
+      const y = await client.getLocalPlayer();
+      console.log('PLAYER: ', y);
+    };
+    player();
     events.on('stateChanged', console.log);
     return () => {
       events.off('stateChanged', console.log);
