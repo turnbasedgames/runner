@@ -10,7 +10,7 @@
     "postinstall": "(cd frontend && npm install); (cd test_app/frontend && npm install);",
     "lint": "eslint . --ignore-path .gitignore --ext .js",
     "build": "concurrently \"cd frontend && npm run build\" \"cd test_app/frontend && npm run build\"",
-    "dev": "runner -Dde --dev"
+    "dev": "runner -Ddec"
   },
   "repository": {
     "type": "git",
