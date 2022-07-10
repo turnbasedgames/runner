@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   AppBar, Toolbar, Typography, Stack, Button, IconButton, Paper, MenuItem, MenuList, LinearProgress,
 } from '@mui/material';
+import { io } from 'socket.io-client';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReactJson from 'react-json-view';
 import {
-  addPlayer, getState, removePlayer,
+  addPlayer, getState, removePlayer, BASE_URL,
 } from '../data';
 
 function GameManager() {
@@ -25,6 +26,17 @@ function GameManager() {
   useEffect(() => {
     reloadGameState();
   }, []);
+
+  useEffect(() => {
+    const socket = io(BASE_URL);
+    socket.on('stateChanged', reloadGameState);
+
+    return () => {
+      socket.off('stateChanged', reloadGameState);
+      socket.disconnect();
+    };
+  }, []);
+
   let playerTitle = 'No Players!';
   if (players.length === 1) {
     playerTitle = '1 Player';
