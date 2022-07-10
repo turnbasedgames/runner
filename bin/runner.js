@@ -31,7 +31,7 @@ import { setupServer } from '../src/setupServer.cjs';
   program.parse();
   const options = program.opts();
 
-  clearConsole();
+  // clearConsole();
   console.log(chalk.gray('Starting runner with your game...\n'));
   console.log('running with options:', options);
 
