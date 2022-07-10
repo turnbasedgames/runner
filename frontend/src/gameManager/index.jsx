@@ -56,7 +56,6 @@ function GameManager() {
               variant="outlined"
               onClick={async () => {
                 const player = await addPlayer();
-                await reloadGameState();
                 openPlayerTab(player);
               }}
             >
@@ -128,7 +127,6 @@ function GameManager() {
                       onClick={async (e) => {
                         e.stopPropagation();
                         await removePlayer(player);
-                        await reloadGameState();
                       }}
                     >
                       <ClearIcon />
