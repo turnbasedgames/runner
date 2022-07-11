@@ -114,6 +114,8 @@ module.exports = {
     });
 
     app.use((err, req, res) => {
+      // log error for developers so they can see any potential errors on the backendModule for
+      // functions related to onRoomStart, onPlayerJoin, and onPlayerQuit
       console.error(err);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
     });
