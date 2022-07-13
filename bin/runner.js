@@ -39,13 +39,13 @@ import { setupServer } from '../src/setupServer.cjs';
   }
 
   const portForUserFrontend = options.frontendUrl
-    ?? await getPort({ port: 4000 });
-  const portForRunnerBackend = await getPort({ port: 4100 });
+    ?? await getPort({ port: 3000 });
+  const portForRunnerBackend = await getPort({ port: 3100 });
   const portForRunnerFrontend = options.tbgFrontendUrl
     ?? await getPort({ port: portForRunnerBackend + 1 });
   const runnerUrl = `http://localhost:${portForRunnerFrontend}`;
 
-  // clearConsole();
+  clearConsole();
   console.log(chalk.gray('Starting runner with your game...\n'));
   console.log('running with options:', options);
 
