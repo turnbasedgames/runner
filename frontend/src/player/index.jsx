@@ -48,7 +48,7 @@ function Player() {
     if (iframe) {
       // TODO: MAIN-85 dynamically set the src url
       // eslint-disable-next-line no-param-reassign
-      iframe.src = 'http://localhost:3000';
+      iframe.src = `http://localhost:${process.env.REACT_APP_USER_PORT}`;
       const connection = connectToChild({
         iframe,
         methods: {
