@@ -87,7 +87,7 @@ import { setupServer } from '../src/setupServer.cjs';
   });
 
   if (options.dev) {
-    exec('cd test_app/frontend && BROWSER=none npm start', (error, stdout, stderr) => {
+    exec(`cd test_app/frontend && PORT=${portForUserFrontend} npm start`, (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
         return;

@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-export const BASE_URL = 'http://localhost:3100';
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
+console.log(process.env.PORT);
+console.log(DEFAULT_PORT);
+export const BASE_URL = 'http://localhost:4100';
 
 export const addPlayer = async () => {
   const { data } = await axios.post(`${BASE_URL}/player`);
