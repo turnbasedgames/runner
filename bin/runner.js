@@ -65,10 +65,6 @@ import { setupServer } from '../src/setupServer.cjs';
       console.log(`error: ${error.message}`);
       return;
     }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
 
     console.log(`stdout: ${stdout}`);
   });
@@ -80,10 +76,7 @@ import { setupServer } from '../src/setupServer.cjs';
         console.log(`error: ${error.message}`);
         return;
       }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
+
       console.log(`stdout: ${stdout}`);
     });
     userFrontendProcess.stdout.pipe(process.stdout);
