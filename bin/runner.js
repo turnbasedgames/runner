@@ -61,7 +61,7 @@ import { setupServer } from '../src/setupServer.cjs';
   });
 
   process.env.PORT = 8000;
-  const runnerFrontendProcess = exec(`cd frontend && PORT=${portForRunnerFrontend} REACT_APP_BACKEND_PORT=${portForRunnerBackend} npm start`, (error, stdout, stderr) => {
+  const runnerFrontendProcess = exec(`cd frontend && PORT=${portForRunnerFrontend} REACT_APP_USER_PORT=${portForUserFrontend} REACT_APP_BACKEND_PORT=${portForRunnerBackend} npm start`, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
