@@ -12,11 +12,6 @@ import { setupServer } from '../src/setupServer.cjs';
 // TODO: MAIN-83 setup dev environment option for a local dummy user frontend and backend
 
 (async () => {
-  const portForUserFrontend = await getPort({ port: 3000 });
-  const portForRunnerBackend = await getPort({ port: 3100 });
-  const portForRunnerFrontend = await getPort({ port: portForRunnerBackend + 1 });
-  const runnerUrl = `http://localhost:${portForRunnerFrontend}`;
-
   program
     .addOption(new Option('-t, --tbg-frontend-url <tbgFrontendUrl>').hideHelp())
     .addOption(new Option('-e, --empty-backend').hideHelp())
@@ -31,10 +26,6 @@ import { setupServer } from '../src/setupServer.cjs';
   program.parse();
   const options = program.opts();
 
-  // clearConsole();
-  console.log(chalk.gray('Starting runner with your game...\n'));
-  console.log('running with options:', options);
-
   // validate options
   if (options.tbgFrontendUrl) {
     if (!stringIsAValidUrl(options.tbgFrontendUrl)) {
@@ -47,13 +38,24 @@ import { setupServer } from '../src/setupServer.cjs';
     }
   }
 
+  const portForUserFrontend = options.frontendUrl
+    ?? await getPort({ port: 4000 });
+  const portForRunnerBackend = await getPort({ port: 4100 });
+  const portForRunnerFrontend = options.tbgFrontendUrl
+    ?? await getPort({ port: portForRunnerBackend + 1 });
+  const runnerUrl = `http://localhost:${portForRunnerFrontend}`;
+
+  // clearConsole();
+  console.log(chalk.gray('Starting runner with your game...\n'));
+  console.log('running with options:', options);
+
   const cleanupServerFunc = setupServer({
     isEmptyBackend: options.emptyBackend,
     apiPort: portForRunnerBackend,
   });
   const cleanupFrontendsFunc = setupFrontends({
-    frontendUrl: options.frontendUrl,
-    tbgFrontendUrl: options.tbgFrontendUrl,
+    frontendUrl: portForRunnerFrontend,
+    tbgFrontendUrl: portForUserFrontend,
     portForRunnerFrontend,
     portForUserFrontend,
   });
@@ -72,19 +74,19 @@ import { setupServer } from '../src/setupServer.cjs';
     });
   });
 
-  if (options.dev) {
-    exec(`cd frontend && PORT=${portForRunnerFrontend} npm start`, (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    });
+  exec(`cd frontend && PORT=${portForRunnerFrontend} npm start`, (error, stdout, stderr) => {
+    if (error) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+  });
 
+  if (options.dev) {
     exec('cd test_app/frontend && BROWSER=none npm start', (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);

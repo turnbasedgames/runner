@@ -26,6 +26,8 @@ module.exports = {
   setupFrontends({
     frontendUrl, tbgFrontendUrl, portForRunnerFrontend, portForUserFrontend,
   }) {
+    console.log('BUILD PATH: ', buildPath);
+    console.log('USER FRONTEND PATH: ', userFrontendPath);
     const cleanupFuncs = [
       setupFrontendService(tbgFrontendUrl, buildPath, portForRunnerFrontend),
       setupFrontendService(frontendUrl, userFrontendPath, portForUserFrontend),
