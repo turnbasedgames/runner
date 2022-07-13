@@ -60,6 +60,39 @@ import { setupServer } from '../src/setupServer.cjs';
     portForUserFrontend,
   });
 
+  process.env.PORT = 8000;
+  const runnerFrontendProcess = exec(`cd frontend && PORT=${portForRunnerFrontend} REACT_APP_BACKEND_PORT=${portForRunnerBackend} npm start`, (error, stdout, stderr) => {
+    console.log('HI');
+    if (error) {
+      console.log(`error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+    }
+
+    console.log(`stdout: ${stdout}`);
+  });
+
+  runnerFrontendProcess.stdout.pipe(process.stdout);
+
+  if (options.dev) {
+    const userFrontendProcess = exec(`cd test_app/frontend && PORT=${portForUserFrontend} npm start`, (error, stdout, stderr) => {
+      if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+
+    userFrontendProcess.stdout.pipe(process.stdout);
+  }
+
   console.log(`${chalk.green('\nYou can now view the runner in the browser at:')} \n${chalk.green.bold(runnerUrl)}`);
 
   if (!options.disableOpen) {
@@ -73,30 +106,4 @@ import { setupServer } from '../src/setupServer.cjs';
       process.exit();
     });
   });
-
-  exec(`cd frontend && PORT=${portForRunnerFrontend} npm start`, (error, stdout, stderr) => {
-    if (error) {
-      console.log(`error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-  });
-
-  if (options.dev) {
-    exec(`cd test_app/frontend && PORT=${portForUserFrontend} npm start`, (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    });
-  }
 })();
