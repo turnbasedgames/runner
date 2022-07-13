@@ -62,7 +62,6 @@ import { setupServer } from '../src/setupServer.cjs';
 
   process.env.PORT = 8000;
   const runnerFrontendProcess = exec(`cd frontend && PORT=${portForRunnerFrontend} REACT_APP_BACKEND_PORT=${portForRunnerBackend} npm start`, (error, stdout, stderr) => {
-    console.log('HI');
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -74,11 +73,10 @@ import { setupServer } from '../src/setupServer.cjs';
 
     console.log(`stdout: ${stdout}`);
   });
-
   runnerFrontendProcess.stdout.pipe(process.stdout);
 
   if (options.dev) {
-    const userFrontendProcess = exec(`cd test_app/frontend && PORT=${portForUserFrontend} npm start`, (error, stdout, stderr) => {
+    const userFrontendProcess = exec(`cd test_app/frontend && BROWSER=None PORT=${portForUserFrontend} npm start`, (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
         return;
@@ -89,7 +87,6 @@ import { setupServer } from '../src/setupServer.cjs';
       }
       console.log(`stdout: ${stdout}`);
     });
-
     userFrontendProcess.stdout.pipe(process.stdout);
   }
 
